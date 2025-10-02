@@ -39,9 +39,7 @@ const QuestionForm = () => {
     const isEditing = !!questionId;
 
     const query = new URLSearchParams(location.search);
-    // Use the quiz ID passed from the QuizSectionManager or QuizForm
     const contextQuizId = query.get('quizId'); 
-    // Use the section name passed from the QuizSectionManager for convenience
     const contextSectionName = query.get('section');
 
     // State
@@ -65,7 +63,6 @@ const QuestionForm = () => {
             setLoading(true);
 
             if (!currentQuizId && !isEditing) {
-                 // No quiz context to save to, wait for redirect/manual entry
                  setLoading(false);
                  return;
             }
@@ -88,16 +85,21 @@ const QuestionForm = () => {
                     .maybeSingle();
                 
                 if (quizData?.sections) {
-                    setAvailableSections(quizData.sections);
+                    // Normalize fetched sections by trimming them
+                    const normalizedSections = Array.isArray(quizData.sections) 
+                        ? quizData.sections.map(s => String(s).trim()) 
+                        : [];
+                    setAvailableSections(normalizedSections);
                 }
             }
 
 
             // 3. Fetch existing Question data (if editing)
             if (isEditing) {
+                // Ensure we explicitly select 'topic_id' and 'quiz_id'
                 const { data: questionData, error: qError } = await supabase
                     .from('questions')
-                    .select('*, quiz_id') // Ensure quiz_id is selected for navigation
+                    .select('*, quiz_id, topic_id, quiz_section_name') 
                     .eq('id', questionId)
                     .single();
                 
@@ -114,9 +116,9 @@ const QuestionForm = () => {
                 setCurrentQuizId(question.quiz_id);
                 setDifficulty(question.difficulty || 1);
                 
-                // Set NEW SCHEMA FIELDS
+                // Set NEW SCHEMA FIELDS (trimming fetched section name for consistency)
                 setTopicId(question.topic_id || '');
-                setSelectedSection(question.quiz_section_name || '');
+                setSelectedSection(String(question.quiz_section_name).trim() || '');
                 
                 const correctIndex = question.options.findIndex(opt => opt === question.correct_answer);
                 setCorrectAnswerIndex(String(correctIndex !== -1 ? correctIndex : 0));
@@ -126,8 +128,7 @@ const QuestionForm = () => {
         };
         
         loadFormData();
-    }, [isEditing, questionId, navigate, toast, contextQuizId]);
-
+    }, [isEditing, questionId, navigate, toast, contextQuizId, currentQuizId]); 
 
     // --- Option Handlers (Unchanged) ---
     const handleOptionChange = (index: number, value: string) => {
@@ -157,7 +158,7 @@ const QuestionForm = () => {
         }
     };
 
-    // --- Submission Handler ---
+    // --- Submission Handler (FIX APPLIED) ---
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
@@ -172,15 +173,18 @@ const QuestionForm = () => {
         
         const correctOptionText = cleanOptions[parseInt(correctAnswerIndex)];
         
+        // 💡 FIX: Ensure the section name is trimmed before saving to prevent mismatch errors.
+        const trimmedSection = selectedSection.trim(); 
+
         const questionPayload = {
             quiz_id: currentQuizId, 
             question_text: questionText,
             options: cleanOptions,
             correct_answer: correctOptionText,
             difficulty: difficulty,
-            // NEW SCHEMA FIELDS
+            // NEW SCHEMA FIELDS: Passed directly from state
             topic_id: topicId,
-            quiz_section_name: selectedSection,
+            quiz_section_name: trimmedSection, // Use the trimmed value for saving
         };
 
         let result;
@@ -292,6 +296,11 @@ const QuestionForm = () => {
                                         <option key={topic.id} value={topic.id}>{topic.name}</option>
                                     ))}
                                 </select>
+                                {availableTopics.length === 0 && (
+                                    <p className="text-xs text-red-500 mt-1">
+                                        No topics found. Create topics in the management area.
+                                    </p>
+                                )}
                             </div>
                         </div>
 

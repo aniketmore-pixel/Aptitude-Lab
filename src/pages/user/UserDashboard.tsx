@@ -255,7 +255,7 @@ const UserDashboard = () => {
                     {/* 💡 NEW CARD: Weakness Analysis */}
                     <Card 
                         className="group cursor-pointer border-l-4 border-red-500 bg-card p-6 transition-all hover:shadow-lg"
-                        onClick={() => navigate('/user/weakness-sets')}
+                        onClick={() => navigate('/user/weakness')}
                     >
                         <div className="mb-2 flex items-center justify-between">
                             <h3 className="text-sm font-medium text-muted-foreground">Personalized</h3>
