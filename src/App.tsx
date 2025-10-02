@@ -17,6 +17,7 @@ import ReportsPage from "./pages/admin/ReportsPage";
 import QuizResultsPage from "./pages/QuizResultsPage";
 import TopicManagement from "./pages/admin/TopicManagement";
 import QuizSectionManager from "./pages/admin/QuizSectionManager";
+import NotFound from "./pages/NotFound"; 
 import UserReportsPage from "./pages/UserReportsPage";
 import WeaknessSets from "./pages/user/WeaknessSets";
 
