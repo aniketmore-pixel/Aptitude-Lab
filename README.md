@@ -1,73 +1,117 @@
-# Welcome to your Lovable project
+# Aptitude-Lab
 
-## Project info
+A modern web application for creating, taking, and analyzing quizzes, built with **React (TypeScript)** and **Supabase**. The system provides detailed quiz results, topic-wise analysis, and an admin dashboard to view all user quiz histories. Built strictly using open source tools.
 
-**URL**: https://lovable.dev/projects/4bf00ac4-8996-4ea6-8606-f42a05d1b569
+---
 
-## How can I edit this code?
+## Table of Contents
 
-There are several ways of editing your application.
+- [Features](#features)  
+- [Tech Stack](#tech-stack)  
+- [Project Structure](#project-structure)  
+- [Installation](#installation)  
+- [Usage](#usage)  
+- [Admin Features](#admin-features)  
+- [Contributing](#contributing)  
+- [License](#license)  
 
-**Use Lovable**
+---
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/4bf00ac4-8996-4ea6-8606-f42a05d1b569) and start prompting.
+## Features
 
-Changes made via Lovable will be committed automatically to this repo.
+- **User Features**
+  - Take quizzes with multiple questions.
+  - View detailed quiz results with:
+    - Correct vs incorrect answers.
+    - Section-wise and topic-wise performance.
+    - Time taken and score percentage.
+  - View all past attempts in a sortable history table.
 
-**Use your preferred IDE**
+- **Admin Features**
+  - Drill-down into any user’s quiz history via query parameters.
+  - View detailed analytics for each user.
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- **Analytics**
+  - Sectional performance analysis.
+  - Topic-wise scoring breakdown.
+  - Color-coded scoring for easy visualization.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- **User Experience**
+  - Responsive design for desktops and tablets.
+  - Loading states with animations.
+  - Sortable tables and dynamic back navigation.
 
-Follow these steps:
+---
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+## Tech Stack
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+- **Frontend:** React, TypeScript, TailwindCSS  
+- **Backend & Database:** Supabase (PostgreSQL, Auth, Storage)  
+- **UI Components:** Shadcn/UI, Lucide-React  
+- **State Management & Hooks:** React Hooks, Custom Hooks (useToast)  
+- **Routing:** React Router v6
 
-# Step 3: Install the necessary dependencies.
-npm i
+---
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+## Project Structure
+
+```
+src/
+  ├─ components/         # Reusable UI components
+  ├─ hooks/              # Custom hooks (e.g., useToast)
+  ├─ integrations/       # Supabase client setup
+  ├─ pages/              # Application pages
+  │   ├─ QuizPage.tsx
+  │   ├─ QuizResultsPage.tsx
+  │   ├─ UserReportsPage.tsx
+  └─ App.tsx
+  └─ main.tsx
+public/
+  └─ index.html
+```
+
+---
+
+## Installation
+
+1. Clone the repository:
+```bash
+git clone <repo-url>
+cd <project-folder>
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Configure Supabase:
+   - Create a `.env` file with your Supabase credentials:
+   ```env
+   VITE_SUPABASE_URL=<your-supabase-url>
+   VITE_SUPABASE_ANON_KEY=<your-anon-key>
+   ```
+
+4. Run the development server:
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+---
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Usage
 
-**Use GitHub Codespaces**
+- Open your browser at `http://localhost:5173`.
+- Users can start quizzes, select answers, and view their results.
+- Admins can access any user's quiz history by using query parameters, e.g., `/user/reports?userId=<targetUserId>`.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+---
 
-## What technologies are used for this project?
+## Admin Features
 
-This project is built with:
+- View all users' quiz histories.
+- Drill-down into individual user attempts.
+- See detailed sectional and topic-based performance.
+- Accessible via query parameter `userId` for admin views.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
 
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/4bf00ac4-8996-4ea6-8606-f42a05d1b569) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
