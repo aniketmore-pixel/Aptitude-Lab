@@ -4,6 +4,10 @@ A modern web application for creating, taking, and analyzing quizzes, built with
 
 ---
 
+<img width="960" height="540" alt="image" src="https://github.com/user-attachments/assets/525bbf82-e4c9-4d0c-b0f9-9aca04b0ce44" />
+
+---
+
 ## Table of Contents
 
 - [Features](#features)  
